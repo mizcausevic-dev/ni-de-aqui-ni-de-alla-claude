@@ -1,0 +1,4 @@
+out/frames/
+out/render.log
+__pycache__/
+.DS_Store

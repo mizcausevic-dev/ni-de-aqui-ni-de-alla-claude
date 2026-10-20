@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ni de Aquí Ni de Allá with Claude — 30-second recipe animation</title>
+<meta name="description" content="A deterministic 30-second Canvas animation that builds the cocktail Ni de Aquí Ni de Allá (Bar Providencia, Washington, D.C.) from an empty rocks glass to the finished drink.">
+<meta name="color-scheme" content="dark">
+<style>
+  @font-face { font-family: "Playfair Display"; font-style: normal; font-weight: 400; font-display: block; src: url(fonts/playfair-display-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Playfair Display"; font-style: italic; font-weight: 400; font-display: block; src: url(fonts/playfair-display-latin-400-italic.woff2) format("woff2"); }
+  @font-face { font-family: "Playfair Display"; font-style: normal; font-weight: 700; font-display: block; src: url(fonts/playfair-display-latin-700-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Playfair Display"; font-style: normal; font-weight: 900; font-display: block; src: url(fonts/playfair-display-latin-900-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: block; src: url(fonts/inter-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: block; src: url(fonts/inter-latin-500-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: block; src: url(fonts/inter-latin-600-normal.woff2) format("woff2"); }
+
+  :root { --bg: #0a0605; --ink: #f3e9d8; --accent: #e9b872; --panel: rgba(20, 12, 8, 0.82); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  body { display: grid; place-items: center; min-height: 100vh; padding: 16px; gap: 14px; grid-template-rows: 1fr auto; }
+  #stage { width: min(100vw - 32px, 100vh - 110px); aspect-ratio: 1 / 1; height: auto; display: block; border-radius: 6px; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+
+  #controls { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--panel); border: 1px solid rgba(243,233,216,0.12); border-radius: 999px; backdrop-filter: blur(8px); }
+  #controls button { font: 500 14px/1 Inter, system-ui, sans-serif; color: var(--ink); background: rgba(243,233,216,0.08); border: 1px solid rgba(243,233,216,0.18); border-radius: 999px; padding: 10px 16px; cursor: pointer; min-width: 84px; }
+  #controls button:hover { background: rgba(243,233,216,0.14); }
+  #controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #scrub { width: min(42vw, 360px); accent-color: var(--accent); }
+  #time { font-variant-numeric: tabular-nums; min-width: 64px; text-align: right; color: rgba(243,233,216,0.7); font-size: 14px; }
+  #hint { font-size: 12px; color: rgba(243,233,216,0.45); }
+
+  /* capture mode: fixed 1080x1080 stage, no chrome */
+  body.capture { padding: 0; gap: 0; display: block; background: #000; }
+  body.capture #stage { width: 1080px; height: 1080px; border-radius: 0; box-shadow: none; }
+  body.capture #controls { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) { #controls button { transition: none; } }
+</style>
+</head>
+<body>
+  <canvas id="stage" width="1080" height="1080" aria-label="Animated recipe for the cocktail Ni de Aquí Ni de Allá with Claude" role="img"></canvas>
+
+  <div id="controls" aria-label="Playback controls">
+    <button id="play" type="button" aria-pressed="false">Play</button>
+    <button id="restart" type="button">Restart</button>
+    <label for="scrub" class="sr-only" style="position:absolute;left:-9999px">Timeline</label>
+    <input id="scrub" type="range" min="0" max="30" step="0.0333333" value="0" aria-label="Timeline, 0 to 30 seconds">
+    <span id="time">0.00 s</span>
+    <span id="hint">Space · R</span>
+  </div>
+
+  <script src="recipe.js"></script>
+  <script src="animation.js"></script>
+</body>
+</html>
