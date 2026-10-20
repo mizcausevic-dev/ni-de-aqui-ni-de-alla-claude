@@ -70,7 +70,7 @@
     const D = { x: 540, y: 880, s: 1.15 };         // hero
     const mixHome = { x: 640, y: 820, s: 1.0 };
 
-    const toB = easeInOutCubic(win(t, byId.mixice.at, 1.0));
+    const toB = easeInOutCubic(win(t, byId.mixice.at, 0.6));
     const toC = easeInOutCubic(win(t, byId.garnish.at, 1.5));
     const toD = easeInOutCubic(win(t, byId.hero.at, 2.2));
 
@@ -79,13 +79,13 @@
     rocks = { x: lerp(rocks.x, C.x, toC), y: lerp(rocks.y, C.y, toC), s: lerp(rocks.s, C.s, toC) };
     rocks = { x: lerp(rocks.x, D.x, toD), y: lerp(rocks.y, D.y, toD), s: lerp(rocks.s, D.s, toD) };
 
-    const mixIn = easeOutCubic(win(t, byId.mixice.at, 1.0));
+    const mixIn = easeOutCubic(win(t, byId.mixice.at + 0.3, 0.9));
     const mixOut = easeInCubic(win(t, byId.garnish.at, 1.0));
     // lift and shift the mixing glass while it pours so the spout sits over the rocks glass
     const sp = win(t, byId.strain.at, byId.strain.dur);
     const strainShift = easeInOutCubic(smooth(0, 0.28, sp)) * (1 - easeInOutCubic(smooth(0.86, 1, sp)));
     const mix = {
-      x: mixHome.x - 260 * mixOut - 70 * strainShift, y: mixHome.y + 520 * (1 - mixIn) + 300 * mixOut - 60 * strainShift, s: mixHome.s,
+      x: mixHome.x - 340 * (1 - mixIn) - 260 * mixOut - 70 * strainShift, y: mixHome.y + 320 * (1 - mixIn) + 300 * mixOut - 60 * strainShift, s: mixHome.s,
       alpha: mixIn * (1 - mixOut)
     };
     return { rocks, mix };
